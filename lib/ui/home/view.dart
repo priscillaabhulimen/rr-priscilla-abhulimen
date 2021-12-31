@@ -1,11 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:rr_priscilla_abhulimen/core/models/note_model.dart';
-import 'package:rr_priscilla_abhulimen/core/services/database_service.dart';
 import 'package:rr_priscilla_abhulimen/styles/textstyles.dart';
 import 'package:rr_priscilla_abhulimen/ui/new_note/view.dart';
 import 'package:rr_priscilla_abhulimen/ui/notes_bloc.dart';
 import 'package:rr_priscilla_abhulimen/utils/rr_page_route.dart';
+import 'package:rr_priscilla_abhulimen/widgets/buttons/action_button.dart';
 import 'package:rr_priscilla_abhulimen/widgets/indicators/rr_loader.dart';
 import 'package:rr_priscilla_abhulimen/widgets/note_tile.dart';
 
@@ -18,6 +18,7 @@ class HomeView extends StatefulWidget {
 
 class _HomeViewState extends State<HomeView> {
   final bloc = NotesBloc();
+  bool button = false;
 
   @override
   void dispose() {
@@ -51,7 +52,17 @@ class _HomeViewState extends State<HomeView> {
       ),
       body: Padding(
         padding: EdgeInsets.symmetric(vertical: 12, horizontal: 15),
-        child: StreamBuilder<List<Note>>(
+        child: !button ? Center(
+          child: AppButton(
+            text: 'Get Notes',
+            onPressed: (){
+              setState(() {
+                button = true;
+              });
+              bloc.getNotes();
+            },
+          ),
+        ) : StreamBuilder<List<Note>>(
           stream: bloc.notes,
           builder: (context, snapshot) {
             if (!snapshot.hasData) {
@@ -60,8 +71,15 @@ class _HomeViewState extends State<HomeView> {
               );
             } else if (snapshot.hasError) {
               return Center(
-                child: Text(
-                  snapshot.error.toString(),
+                child: Column(
+                  children: [
+                    Text(
+                      'Oops, looks like an error occurred',
+                      style: AppTextStyles.subtitle1,
+                    ),
+                    SizedBox(height: 10),
+                    AppButton(text: 'Try Again', onPressed: bloc.getNotes)
+                  ],
                 ),
               );
             } else if (snapshot.data == null || snapshot.data.length == 0) {
