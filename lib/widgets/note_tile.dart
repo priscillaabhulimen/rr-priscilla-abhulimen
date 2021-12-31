@@ -5,7 +5,7 @@ import 'package:rr_priscilla_abhulimen/styles/colors.dart';
 import 'package:rr_priscilla_abhulimen/styles/textstyles.dart';
 
 class NoteTile extends StatefulWidget {
-  final NoteModel note;
+  final Note note;
   NoteTile({Key key, this.note}) : super(key: key);
 
   @override

@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:path_provider/path_provider.dart';
+import 'package:rr_priscilla_abhulimen/core/models/note_model.dart';
 import 'package:sqflite/sqflite.dart';
 
 class DatabaseServices{
@@ -36,5 +37,52 @@ class DatabaseServices{
         $noteColumnBody TEXT NOT NULL
       )
     ''');
+  }
+
+  Future<int> createNote(Note note) async{
+    final data = await database;
+    return data.insert(
+        'noteTable',
+        note.toMap()
+    );
+  }
+
+  Future<int> deleteNote(Note note) async{
+    final data = await database;
+    return data.delete(
+      'noteTable',
+      where: '_id = ?',
+      whereArgs: [note.id]
+    );
+  }
+
+  Future<List<Note>> getAllNotes() async{
+    final data = await database;
+    var allRows = await data.query('noteTable');
+
+    List<Note> notesList = allRows.isNotEmpty ? allRows.map((e) => Note.fromMap(e)).toList() : [];
+    return notesList;
+  }
+
+  Future<Note> getNoteById(Note note) async{
+    final data = await database;
+    var res = await data.query(
+        'noteTable',
+        where: '_id = ?',
+      whereArgs: [note.id]
+    );
+    return res.isNotEmpty ? Note.fromMap(res.first) : null;
+  }
+
+  Future<int> updateNote(Note note) async{
+    final data = await database;
+    var res = await data.update(
+      'noteTable',
+      note.toMap(),
+      where: '_id = ?',
+      whereArgs: [note.id]
+    );
+
+    return res;
   }
 }
