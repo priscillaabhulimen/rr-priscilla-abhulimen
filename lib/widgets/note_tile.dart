@@ -3,9 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:rr_priscilla_abhulimen/core/models/note_model.dart';
 import 'package:rr_priscilla_abhulimen/styles/colors.dart';
 import 'package:rr_priscilla_abhulimen/styles/textstyles.dart';
-import 'package:rr_priscilla_abhulimen/ui/new_note/view.dart';
 import 'package:rr_priscilla_abhulimen/ui/notes_bloc.dart';
-import 'package:rr_priscilla_abhulimen/utils/rr_page_route.dart';
 
 class NoteTile extends StatefulWidget {
   final Note note;
@@ -58,10 +56,12 @@ class _NoteTileState extends State<NoteTile> {
                     child: Container(
                       padding: EdgeInsets.symmetric(horizontal: 12, vertical: 10),
                       alignment: Alignment.center,
-                      color: Colors.green,
                       child: Text(
                         'Yes',
-                        style: AppTextStyles.subtitle1,
+                        style: TextStyle(
+                          color: AppColors.primaryColor,
+                          fontSize: 14
+                        ),
                       ),
                     ),
                   ),
@@ -74,10 +74,12 @@ class _NoteTileState extends State<NoteTile> {
                     child: Container(
                       padding: EdgeInsets.symmetric(horizontal: 12, vertical: 10),
                       alignment: Alignment.center,
-                      color: Colors.red,
                       child: Text(
                         'No',
-                        style: AppTextStyles.subtitle1
+                        style: TextStyle(
+                            color: AppColors.secondaryColor,
+                            fontSize: 14
+                        ),
                       ),
                     ),
                   )
@@ -95,19 +97,30 @@ class _NoteTileState extends State<NoteTile> {
               color: AppColors.secondaryDark,
               border: Border.all(color: AppColors.primaryColor)
           ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          child: Row(
             children: [
-              Text(
-                widget.note.title,
-                style: AppTextStyles.title2,
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      widget.note.title,
+                      style: AppTextStyles.title2,
+                    ),
+                    SizedBox(height: 6),
+                    Text(
+                      widget.note.body,
+                      style: AppTextStyles.subtitle2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ],
+                ),
               ),
-              SizedBox(height: 6),
-              Text(
-                widget.note.body,
-                style: AppTextStyles.subtitle2,
-                overflow: TextOverflow.ellipsis,
-              ),
+              Icon(
+                Icons.edit_outlined,
+                color: AppColors.primaryColor,
+                size: 28,
+              )
             ],
           ),
         ),

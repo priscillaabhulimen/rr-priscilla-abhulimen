@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:rr_priscilla_abhulimen/core/models/note_model.dart';
 import 'package:rr_priscilla_abhulimen/styles/colors.dart';
 import 'package:rr_priscilla_abhulimen/styles/textstyles.dart';
+import 'package:rr_priscilla_abhulimen/widgets/buttons/action_button.dart';
 import 'package:rr_priscilla_abhulimen/widgets/indicators/rr_loader.dart';
 
 import '../notes_bloc.dart';
@@ -55,36 +56,6 @@ class _NewNoteViewState extends State<NewNoteView> {
             'New Note'
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: AppColors.primaryColor,
-        onPressed: (){
-          setState(() {
-            loading = true;
-          });
-          if(widget.note == null){
-            bloc.createNote(Note(
-                title: titleCont.text,
-                body: bodyCont.text
-            ));
-
-          }
-          else{
-            bloc.editNote(Note(
-              id: widget.note.id,
-              title: titleCont.text,
-              body: bodyCont.text,
-            ));
-          }
-          setState(() {
-            loading = false;
-          });
-          if(Navigator.of(context).canPop()) Navigator.pop(context);
-        },
-        child: Icon(
-          Icons.save_outlined,
-          size: 30,
-        ),
-      ),
       body: Container(
         padding: EdgeInsets.symmetric(horizontal: 15, vertical: 12),
         child: loading ?  Center(
@@ -100,6 +71,7 @@ class _NewNoteViewState extends State<NewNoteView> {
                 ),
                 style: AppTextStyles.title1,
                 maxLines: 1,
+                keyboardType: TextInputType.text,
                 controller: titleCont,
               ),
             ),
@@ -113,12 +85,40 @@ class _NewNoteViewState extends State<NewNoteView> {
                       hintText: 'Note',
                       hintStyle: AppTextStyles.subtitle1
                   ),
+                  keyboardType: TextInputType.multiline,
                   style: AppTextStyles.subtitle1,
                   expands: true,
                   maxLines: null,
                   controller: bodyCont,
                 ),
               ),
+            ),
+            SizedBox(height: 12),
+            AppButton(
+                text: 'Save',
+              onPressed: (){
+                setState(() {
+                  loading = true;
+                });
+                if(widget.note == null){
+                  bloc.createNote(Note(
+                      title: titleCont.text,
+                      body: bodyCont.text
+                  ));
+
+                }
+                else{
+                  bloc.editNote(Note(
+                    id: widget.note.id,
+                    title: titleCont.text,
+                    body: bodyCont.text,
+                  ));
+                }
+                setState(() {
+                  loading = false;
+                });
+                if(Navigator.of(context).canPop()) Navigator.pop(context);
+              },
             )
           ],
         ),
