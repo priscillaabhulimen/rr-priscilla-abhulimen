@@ -88,7 +88,7 @@ class AppDialog extends StatelessWidget {
 
                               Text(
                                 title ?? '',
-                                style: AppTextStyles.subtitle,
+                                style: AppTextStyles.subtitle2,
                               ),
 
                               Padding(

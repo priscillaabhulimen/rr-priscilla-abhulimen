@@ -6,7 +6,8 @@ import 'package:rr_priscilla_abhulimen/styles/textstyles.dart';
 
 class NoteTile extends StatefulWidget {
   final Note note;
-  NoteTile({Key key, this.note}) : super(key: key);
+  final onDelete;
+  NoteTile({Key key, this.note, this.onDelete}) : super(key: key);
 
   @override
   _NoteTileState createState() => _NoteTileState();
@@ -37,7 +38,7 @@ class _NoteTileState extends State<NoteTile> {
                       SizedBox(height: 6),
                       Text(
                         widget.note.body,
-                        style: AppTextStyles.subtitle,
+                        style: AppTextStyles.subtitle2,
                         overflow: TextOverflow.ellipsis,
                       ),
                     ],
@@ -46,9 +47,7 @@ class _NoteTileState extends State<NoteTile> {
               )
           ),
           GestureDetector(
-            onTap: (){
-              print('delete note');
-            },
+            onTap: widget.onDelete,
             child: Icon(
               Icons.close,
               color: Colors.red,

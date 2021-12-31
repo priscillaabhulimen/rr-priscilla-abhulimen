@@ -6,10 +6,17 @@ import 'colors.dart';
 class AppTextStyles {
   AppTextStyles._();
 
-  static TextStyle get subtitle {
+  static TextStyle get subtitle2 {
     return TextStyle(
       fontSize: 10,
       color: AppColors.mainWhite
+    );
+  }
+
+  static TextStyle get subtitle1 {
+    return TextStyle(
+        fontSize: 12.5,
+        color: AppColors.mainWhite
     );
   }
 

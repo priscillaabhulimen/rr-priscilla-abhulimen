@@ -1,8 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:rr_priscilla_abhulimen/core/models/note_model.dart';
 
 class NewNoteView extends StatefulWidget {
-  const NewNoteView({Key key}) : super(key: key);
+  final Note note;
+  NewNoteView({
+    Key key,
+    this.note
+  }) : super(key: key);
 
   @override
   _NewNoteViewState createState() => _NewNoteViewState();
@@ -30,7 +35,7 @@ class _NewNoteViewState extends State<NewNoteView> {
         ],
       ),
       body: Container(
-        
+
       ),
     );
   }
