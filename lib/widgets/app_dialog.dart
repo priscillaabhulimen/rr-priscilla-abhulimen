@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:rr_priscilla_abhulimen/styles/colors.dart';
 import 'package:rr_priscilla_abhulimen/styles/textstyles.dart';
 
 class AppDialog extends StatelessWidget {
@@ -34,14 +35,14 @@ class AppDialog extends StatelessWidget {
                 child: Container(
                   padding: EdgeInsets.only(top: 0),
                   decoration: BoxDecoration(
-                    color: Colors.white,
+                    color: AppColors.secondaryLight,
                   ),
                   child: Container(
                     padding: EdgeInsets.symmetric(horizontal: 0, vertical: 16),
                     width: double.infinity,
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: AppColors.secondaryLight,
                       boxShadow: [
                         BoxShadow(
                           color: Color(0xFF202046).withOpacity(.08),
@@ -63,7 +64,7 @@ class AppDialog extends StatelessWidget {
                           width: 50,
                           alignment: Alignment.center,
                           decoration: BoxDecoration(
-                            color: Color(0xFFDDDDDD),
+                            color: AppColors.primaryLight,
                           ),
                         ),
                         SizedBox(height: 10),

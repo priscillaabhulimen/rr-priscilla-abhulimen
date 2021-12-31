@@ -15,14 +15,21 @@ class AppTextStyles {
 
   static TextStyle get subtitle1 {
     return TextStyle(
-        fontSize: 12.5,
+        fontSize: 13.5,
         color: AppColors.mainWhite
     );
   }
 
-  static TextStyle get title {
+  static TextStyle get title1 {
     return TextStyle(
-      fontSize: 17,
+      fontSize: 23,
+      fontWeight: FontWeight.bold,
+      color: AppColors.mainWhite,
+    );
+  }
+  static TextStyle get title2 {
+    return TextStyle(
+      fontSize: 17.5,
       fontWeight: FontWeight.bold,
       color: AppColors.mainWhite,
     );

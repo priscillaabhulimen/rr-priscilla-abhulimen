@@ -35,8 +35,9 @@ class _HomeViewState extends State<HomeView> {
         actions: [
           GestureDetector(
             onTap: () {
-              Navigator.push(
-                  context, RRPageRoute.routeTo(builder: (_) => NewNoteView()));
+              Navigator.push(context,
+                      RRPageRoute.routeTo(builder: (_) => NewNoteView()))
+                  .then((_) => bloc.getNotes());
             },
             child: Padding(
               padding: EdgeInsets.only(right: 15),
@@ -48,8 +49,8 @@ class _HomeViewState extends State<HomeView> {
           )
         ],
       ),
-      body: RefreshIndicator(
-        onRefresh: DatabaseServices.db.getAllNotes,
+      body: Padding(
+        padding: EdgeInsets.symmetric(vertical: 12, horizontal: 15),
         child: StreamBuilder<List<Note>>(
           stream: bloc.notes,
           builder: (context, snapshot) {
@@ -75,7 +76,25 @@ class _HomeViewState extends State<HomeView> {
               itemCount: snapshot.data.length,
               itemBuilder: (context, index) {
                 Note item = snapshot.data[index];
-                return NoteTile(note: item, onDelete: bloc.deleteNote(item));
+                return Column(
+                  children: [
+                    NoteTile(
+                      note: item,
+                      onDelete: () {
+                        bloc.deleteNote(item);
+                      },
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            RRPageRoute.routeTo(
+                                builder: (_) => NewNoteView(
+                                      note: item,
+                                    ))).then((_) => bloc.getNotes());
+                      },
+                    ),
+                    SizedBox(height: 10)
+                  ],
+                );
               },
             );
           },
