@@ -6,17 +6,18 @@ import 'colors.dart';
 class AppTextStyles {
   AppTextStyles._();
 
-  static TextStyle get label {
+  static TextStyle get subtitle {
     return TextStyle(
       fontSize: 10,
       color: AppColors.mainWhite
     );
   }
 
-  static TextStyle get input {
+  static TextStyle get title {
     return TextStyle(
-      fontSize: 14,
-      color: Colors.black,
+      fontSize: 17,
+      fontWeight: FontWeight.bold,
+      color: AppColors.mainWhite,
     );
   }
 }

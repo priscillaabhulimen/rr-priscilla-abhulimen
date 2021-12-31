@@ -23,6 +23,7 @@ class RedAndRedApp extends StatelessWidget {
           navigatorKey: locator<NavigationService>().navigatorKey,
           theme: ThemeData(
             fontFamily: 'PlusJakartaDisplay',
+            primaryColor: AppColors.primaryColor,
             scaffoldBackgroundColor: AppColors.secondaryDark,
           ),
           onGenerateRoute: RRRouter.generateRoute,
