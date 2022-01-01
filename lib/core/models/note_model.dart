@@ -1,15 +1,3 @@
-import 'dart:convert';
-
-Note noteFromJson(String str){
-  final jsonData = json.decode(str);
-  return Note.fromMap(jsonData);
-}
-
-String noteToJson(Note note){
-  final val = note.toMap();
-  return json.encode(val);
-}
-
 class Note{
   final int id;
   final String title;
