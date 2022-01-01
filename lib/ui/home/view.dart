@@ -5,7 +5,6 @@ import 'package:rr_priscilla_abhulimen/core/models/note_model.dart';
 import 'package:rr_priscilla_abhulimen/core/services/database_service.dart';
 import 'package:rr_priscilla_abhulimen/styles/textstyles.dart';
 import 'package:rr_priscilla_abhulimen/ui/home/bloc.dart';
-import 'package:rr_priscilla_abhulimen/ui/new_note/notes_bloc.dart';
 import 'package:rr_priscilla_abhulimen/ui/new_note/view.dart';
 import 'package:rr_priscilla_abhulimen/utils/rr_page_route.dart';
 import 'package:rr_priscilla_abhulimen/widgets/buttons/action_button.dart';

@@ -5,7 +5,6 @@ import 'package:equatable/equatable.dart';
 import 'package:rr_priscilla_abhulimen/core/models/note_model.dart';
 import 'package:rr_priscilla_abhulimen/core/services/database_service.dart';
 import 'package:rr_priscilla_abhulimen/utils/rr_app_notification.dart';
-import 'package:sqflite/sqflite.dart';
 
 class NotesEvent extends Equatable {
   @override
