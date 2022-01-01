@@ -5,9 +5,8 @@ import 'package:flutter/services.dart';
 import 'package:rr_priscilla_abhulimen/rr_app.dart';
 
 import 'app/locator.dart';
-import 'environment.dart';
 
-Future<void> mainCommon(String environ) async {
+Future<void> mainCommon() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   // await ConfigReader.initialize();
@@ -27,9 +26,7 @@ Future<void> mainCommon(String environ) async {
       Config.isProd = true;
     }*/
 
-    runApp(RedAndRedApp(
-      isDebug: environ == Environment.dev,
-    ));
+    runApp(RedAndRedApp());
   }, (exception, stackTrace) async {
     // await Sentry.captureException(exception, stackTrace: stackTrace);
   });
