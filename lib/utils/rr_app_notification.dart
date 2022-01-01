@@ -8,8 +8,8 @@ import 'package:rr_priscilla_abhulimen/styles/colors.dart';
 import 'package:rr_priscilla_abhulimen/widgets/rr_alert.dart';
 import 'error_helper.dart';
 
-class PurpleFinAppNotification {
-  PurpleFinAppNotification._();
+class AppNotification {
+  AppNotification._();
 
   static Future<Flushbar<dynamic>> _show({
     @required String message,
@@ -37,7 +37,7 @@ class PurpleFinAppNotification {
         size: 25.0,
         color: Colors.white,
       ),
-      duration: Duration(milliseconds: 2000),
+      duration: Duration(milliseconds: 4000),
       animationDuration: Duration(milliseconds: 500),
     );
   }

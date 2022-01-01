@@ -3,26 +3,19 @@ import 'package:flutter/material.dart';
 import 'package:rr_priscilla_abhulimen/core/models/note_model.dart';
 import 'package:rr_priscilla_abhulimen/styles/colors.dart';
 import 'package:rr_priscilla_abhulimen/styles/textstyles.dart';
-import 'package:rr_priscilla_abhulimen/ui/notes_bloc.dart';
 
 class NoteTile extends StatefulWidget {
   final Note note;
   final onDelete;
+  final onCancel;
   final Function onTap;
-  NoteTile({Key key, this.note, this.onDelete, this.onTap}) : super(key: key);
+  NoteTile({Key key, this.note, this.onDelete, this.onTap, this.onCancel}) : super(key: key);
 
   @override
   _NoteTileState createState() => _NoteTileState();
 }
 
 class _NoteTileState extends State<NoteTile> {
-  final bloc = NotesBloc();
-
-  @override
-  void dispose() {
-    bloc.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,6 +31,7 @@ class _NoteTileState extends State<NoteTile> {
       key: UniqueKey(),
       onDismissed: (dir){
         showDialog(
+          barrierDismissible: false,
             context: context,
             builder: (context){
               return CupertinoAlertDialog(
@@ -67,15 +61,14 @@ class _NoteTileState extends State<NoteTile> {
                   ),
                   GestureDetector(
                     onTap: (){
-                      bloc.getNotes();
-                      setState(() {});
+                      widget.onCancel();
                       Navigator.pop(context);
                     },
                     child: Container(
                       padding: EdgeInsets.symmetric(horizontal: 12, vertical: 10),
                       alignment: Alignment.center,
                       child: Text(
-                        'No',
+                        'Cancel',
                         style: TextStyle(
                             color: AppColors.secondaryColor,
                             fontSize: 14
@@ -116,6 +109,7 @@ class _NoteTileState extends State<NoteTile> {
                   ],
                 ),
               ),
+              SizedBox(width: 10),
               Icon(
                 Icons.edit_outlined,
                 color: AppColors.primaryColor,

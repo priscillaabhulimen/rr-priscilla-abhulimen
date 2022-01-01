@@ -1,9 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rr_priscilla_abhulimen/core/models/note_model.dart';
+import 'package:rr_priscilla_abhulimen/core/services/database_service.dart';
 import 'package:rr_priscilla_abhulimen/styles/textstyles.dart';
+import 'package:rr_priscilla_abhulimen/ui/home/bloc.dart';
+import 'package:rr_priscilla_abhulimen/ui/new_note/notes_bloc.dart';
 import 'package:rr_priscilla_abhulimen/ui/new_note/view.dart';
-import 'package:rr_priscilla_abhulimen/ui/notes_bloc.dart';
 import 'package:rr_priscilla_abhulimen/utils/rr_page_route.dart';
 import 'package:rr_priscilla_abhulimen/widgets/buttons/action_button.dart';
 import 'package:rr_priscilla_abhulimen/widgets/indicators/rr_loader.dart';
@@ -17,106 +20,190 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
-  final bloc = NotesBloc();
-  bool button = false;
 
-  @override
-  void dispose() {
-    bloc.dispose();
-    super.dispose();
-  }
+
+  // @override
+  // void dispose() {
+  //   bloc.dispose();
+  //   super.dispose();
+  // }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        centerTitle: true,
-        title: Text('Notes List'),
-        actions: [
-          GestureDetector(
-            onTap: () {
-              Navigator.push(context,
-                      RRPageRoute.routeTo(builder: (_) => NewNoteView()))
-                  .then((_) => bloc.getNotes());
-            },
-            child: Padding(
-              padding: EdgeInsets.only(right: 15),
-              child: Icon(
-                Icons.add,
-                size: 30,
+    return BlocProvider<NotesBloc>(
+      create: (context) => NotesBloc(NotesIsNotFetched(), DatabaseServices.db),
+      child: BlocBuilder<NotesBloc, NotesState>(
+        builder: (context, state){
+          final noteBloc = BlocProvider.of<NotesBloc>(context);
+          if(state is NotesIsNotFetched){
+            return Scaffold(
+                appBar: AppBar(
+                  automaticallyImplyLeading: false,
+                  centerTitle: true,
+                  title: Text('Notes List'),
+                  actions: [
+                    GestureDetector(
+                      onTap: () {
+                        final noteBloc = BlocProvider.of<NotesBloc>(context);
+                        Navigator.push(context,
+                            RRPageRoute.routeTo(builder: (_) => NewNoteView())).then((_){
+                          noteBloc.add(GetNotes());
+                        });
+                      },
+                      child: Padding(
+                        padding: EdgeInsets.only(right: 15),
+                        child: Icon(
+                          Icons.add,
+                          size: 30,
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+                body: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 15, vertical: 12),
+                  child: Center(
+                    child: AppButton(
+                      text: 'Get Notes',
+                      onPressed: (){
+                        noteBloc.add(GetNotes());
+                      },
+                    ),
+                  ),
+                )
+            );
+          }
+          else if(state is NotesIsLoading || state is NoteIsDeleting){
+            return Scaffold(
+              appBar: AppBar(
+                automaticallyImplyLeading: false,
+                centerTitle: true,
+                title: Text('Notes List'),
+                actions: [
+                  GestureDetector(
+                    onTap: () {
+                      final noteBloc = BlocProvider.of<NotesBloc>(context);
+                      Navigator.push(context,
+                          RRPageRoute.routeTo(builder: (_) => NewNoteView())).then((_){
+                        noteBloc.add(GetNotes());
+                      });
+                    },
+                    child: Padding(
+                      padding: EdgeInsets.only(right: 15),
+                      child: Icon(
+                        Icons.add,
+                        size: 30,
+                      ),
+                    ),
+                  )
+                ],
+              ),
+              body: Center(
+                child: RRSpinner(),
+              ),
+            );
+          }
+          else if(state is NotesIsLoaded){
+            return Scaffold(
+              appBar: AppBar(
+                automaticallyImplyLeading: false,
+                centerTitle: true,
+                title: Text('Notes List'),
+                actions: [
+                  GestureDetector(
+                    onTap: () {
+                      final noteBloc = BlocProvider.of<NotesBloc>(context);
+                      Navigator.push(context,
+                          RRPageRoute.routeTo(builder: (_) => NewNoteView())).then((_){
+                        noteBloc.add(GetNotes());
+                      });
+                    },
+                    child: Padding(
+                      padding: EdgeInsets.only(right: 15),
+                      child: Icon(
+                        Icons.add,
+                        size: 30,
+                      ),
+                    ),
+                  )
+                ],
+              ),
+              body: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 15, vertical: 12),
+                child: ListView.builder(
+                  itemCount: state.getNotes.length,
+                  itemBuilder: (context, index) {
+                    Note item = state.getNotes[index];
+                    return Column(
+                      children: [
+                        NoteTile(
+                          note: item,
+                          onDelete: () {
+                            noteBloc.add(DeleteNote(item));
+                          },
+                          onCancel: (){
+                            noteBloc.add(GetNotes());
+                          },
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                RRPageRoute.routeTo(
+                                    builder: (_) => NewNoteView(
+                                      note: item,
+                                    ))).then((_){
+                              noteBloc.add(GetNotes());
+                            });
+                          },
+                        ),
+                        SizedBox(height: 10)
+                      ],
+                    );
+                  },
+                ),
+              ),
+            );
+          }
+
+          return Scaffold(
+            appBar: AppBar(
+              automaticallyImplyLeading: false,
+              centerTitle: true,
+              title: Text('Notes List'),
+              actions: [
+                GestureDetector(
+                  onTap: () {
+                    final noteBloc = BlocProvider.of<NotesBloc>(context);
+                    Navigator.push(context,
+                        RRPageRoute.routeTo(builder: (_) => NewNoteView())).then((_){
+                      noteBloc.add(GetNotes());
+                    });
+                  },
+                  child: Padding(
+                    padding: EdgeInsets.only(right: 15),
+                    child: Icon(
+                      Icons.add,
+                      size: 30,
+                    ),
+                  ),
+                )
+              ],
+            ),
+            body: Center(
+              child: Column(
+                children: [
+                  Text(
+                    'Oops, looks like an error occurred',
+                    style: AppTextStyles.subtitle1,
+                  ),
+                  SizedBox(height: 10),
+                  AppButton(text: 'Try Again', onPressed: (){
+                    noteBloc.add(GetNotes());
+                  })
+                ],
               ),
             ),
-          )
-        ],
-      ),
-      body: Padding(
-        padding: EdgeInsets.symmetric(vertical: 12, horizontal: 15),
-        child: !button ? Center(
-          child: AppButton(
-            text: 'Get Notes',
-            onPressed: (){
-              setState(() {
-                button = true;
-              });
-              bloc.getNotes();
-            },
-          ),
-        ) : StreamBuilder<List<Note>>(
-          stream: bloc.notes,
-          builder: (context, snapshot) {
-            if (!snapshot.hasData) {
-              return Center(
-                child: RRSpinner(),
-              );
-            } else if (snapshot.hasError) {
-              return Center(
-                child: Column(
-                  children: [
-                    Text(
-                      'Oops, looks like an error occurred',
-                      style: AppTextStyles.subtitle1,
-                    ),
-                    SizedBox(height: 10),
-                    AppButton(text: 'Try Again', onPressed: bloc.getNotes)
-                  ],
-                ),
-              );
-            } else if (snapshot.data == null || snapshot.data.length == 0) {
-              return Center(
-                child: Text(
-                  'You have no notes yet. Tap the \'+\' to create a new note.',
-                  style: AppTextStyles.subtitle1,
-                ),
-              );
-            }
-            return ListView.builder(
-              itemCount: snapshot.data.length,
-              itemBuilder: (context, index) {
-                Note item = snapshot.data[index];
-                return Column(
-                  children: [
-                    NoteTile(
-                      note: item,
-                      onDelete: () {
-                        bloc.deleteNote(item);
-                      },
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            RRPageRoute.routeTo(
-                                builder: (_) => NewNoteView(
-                                      note: item,
-                                    ))).then((_) => bloc.getNotes());
-                      },
-                    ),
-                    SizedBox(height: 10)
-                  ],
-                );
-              },
-            );
-          },
-        ),
+          );
+        },
       ),
     );
   }
