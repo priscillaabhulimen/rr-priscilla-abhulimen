@@ -6,6 +6,7 @@ import 'package:rr_priscilla_abhulimen/core/services/database_service.dart';
 import 'package:rr_priscilla_abhulimen/styles/colors.dart';
 import 'package:rr_priscilla_abhulimen/styles/textstyles.dart';
 import 'package:rr_priscilla_abhulimen/ui/new_note/notes_bloc.dart';
+import 'package:rr_priscilla_abhulimen/utils/rr_app_notification.dart';
 import 'package:rr_priscilla_abhulimen/widgets/buttons/action_button.dart';
 import 'package:rr_priscilla_abhulimen/widgets/indicators/rr_loader.dart';
 
@@ -97,10 +98,15 @@ class _NewNoteViewState extends State<NewNoteView> {
                         text: 'Save',
                         onPressed: (){
                           if(widget.note == null){
-                            noteBloc.add(CreateNote(Note(
-                              title: titleCont.text,
-                              body: bodyCont.text
-                            )));
+                            if(bodyCont.text == null || bodyCont.text == ''){
+                              AppNotification.error(message: 'Body cannot be empty');
+                            }
+                            else{
+                              noteBloc.add(CreateNote(Note(
+                                  title: titleCont.text,
+                                  body: bodyCont.text
+                              )));
+                            }
                           }
                           else{
                             noteBloc.add(EditNote(widget.note));
