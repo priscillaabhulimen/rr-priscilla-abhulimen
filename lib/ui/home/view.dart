@@ -103,64 +103,102 @@ class _HomeViewState extends State<HomeView> {
             );
           }
           else if(state is NotesIsLoaded){
-            return Scaffold(
-              appBar: AppBar(
-                automaticallyImplyLeading: false,
-                centerTitle: true,
-                title: Text('Notes List'),
-                actions: [
-                  GestureDetector(
-                    onTap: () {
-                      final noteBloc = BlocProvider.of<NotesBloc>(context);
-                      Navigator.push(context,
-                          RRPageRoute.routeTo(builder: (_) => NewNoteView())).then((_){
-                        noteBloc.add(GetNotes());
-                      });
-                    },
-                    child: Padding(
-                      padding: EdgeInsets.only(right: 15),
-                      child: Icon(
-                        Icons.add,
-                        size: 30,
-                      ),
+            if(state.getNotes == null || state.getNotes.length == 0){
+              return Scaffold(
+                  appBar: AppBar(
+                    automaticallyImplyLeading: false,
+                    centerTitle: true,
+                    title: Text('Notes List'),
+                    actions: [
+                      GestureDetector(
+                        onTap: () {
+                          final noteBloc = BlocProvider.of<NotesBloc>(context);
+                          Navigator.push(context,
+                              RRPageRoute.routeTo(builder: (_) => NewNoteView())).then((_){
+                            noteBloc.add(GetNotes());
+                          });
+                        },
+                        child: Padding(
+                          padding: EdgeInsets.only(right: 15),
+                          child: Icon(
+                            Icons.add,
+                            size: 30,
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                  body: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 15, vertical: 12),
+                    child: Center(
+                      child: Text(
+                        'Tap the \'+\' button to create a new note.',
+                        style: AppTextStyles.subtitle1,
+                      )
                     ),
                   )
-                ],
-              ),
-              body: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 15, vertical: 12),
-                child: ListView.builder(
-                  itemCount: state.getNotes.length,
-                  itemBuilder: (context, index) {
-                    Note item = state.getNotes[index];
-                    return Column(
-                      children: [
-                        NoteTile(
-                          note: item,
-                          onDelete: () {
-                            noteBloc.add(DeleteNote(item));
-                          },
-                          onCancel: (){
-                            noteBloc.add(GetNotes());
-                          },
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                RRPageRoute.routeTo(
-                                    builder: (_) => NewNoteView(
-                                      note: item,
-                                    ))).then((_){
-                              noteBloc.add(GetNotes());
-                            });
-                          },
+              );
+            }
+            else{
+              return Scaffold(
+                appBar: AppBar(
+                  automaticallyImplyLeading: false,
+                  centerTitle: true,
+                  title: Text('Notes List'),
+                  actions: [
+                    GestureDetector(
+                      onTap: () {
+                        final noteBloc = BlocProvider.of<NotesBloc>(context);
+                        Navigator.push(context,
+                            RRPageRoute.routeTo(builder: (_) => NewNoteView())).then((_){
+                          noteBloc.add(GetNotes());
+                        });
+                      },
+                      child: Padding(
+                        padding: EdgeInsets.only(right: 15),
+                        child: Icon(
+                          Icons.add,
+                          size: 30,
                         ),
-                        SizedBox(height: 10)
-                      ],
-                    );
-                  },
+                      ),
+                    )
+                  ],
                 ),
-              ),
-            );
+                body: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 15, vertical: 12),
+                  child: ListView.builder(
+                    itemCount: state.getNotes.length,
+                    itemBuilder: (context, index) {
+                      Note item = state.getNotes[index];
+                      return Column(
+                        children: [
+                          NoteTile(
+                            note: item,
+                            onDelete: () {
+                              noteBloc.add(DeleteNote(item));
+                            },
+                            onCancel: (){
+                              noteBloc.add(GetNotes());
+                            },
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  RRPageRoute.routeTo(
+                                      builder: (_) => NewNoteView(
+                                        note: item,
+                                      ))).then((_){
+                                noteBloc.add(GetNotes());
+                              });
+                            },
+                          ),
+                          SizedBox(height: 10)
+                        ],
+                      );
+                    },
+                  ),
+                ),
+              );
+            }
           }
 
           return Scaffold(
