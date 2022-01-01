@@ -106,11 +106,17 @@ class _NewNoteViewState extends State<NewNoteView> {
                                   title: titleCont.text,
                                   body: bodyCont.text
                               )));
+                              if(Navigator.of(context).canPop()) Navigator.maybePop(context);
                             }
                           }
                           else{
-                            noteBloc.add(EditNote(widget.note));
-                          }if(Navigator.of(context).canPop()) Navigator.maybePop(context);
+                            noteBloc.add(EditNote(Note(
+                              id: widget.note.id,
+                              title:  titleCont.text,
+                              body: bodyCont.text
+                            )));
+                            if(Navigator.of(context).canPop()) Navigator.maybePop(context);
+                          }
                         },
                       )
                     ],
