@@ -44,9 +44,10 @@ dependencies:
 
   #dependency injection
   get_it: ^4.0.4
-  flutter_bloc: ^8.0.1
+  flutter_bloc: ^7.1.0
   path_provider: ^1.6.28
   sqflite: ^2.0.1
+#  bloc: ^8.0.2
 
 dev_dependencies:
   flutter_test:
