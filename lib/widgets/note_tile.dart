@@ -97,7 +97,7 @@ class _NoteTileState extends State<NoteTile> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      widget.note.title,
+                      widget.note.title == null || widget.note.title == '' ? 'Title' : widget.note.title,
                       style: AppTextStyles.title2,
                     ),
                     SizedBox(height: 6),
