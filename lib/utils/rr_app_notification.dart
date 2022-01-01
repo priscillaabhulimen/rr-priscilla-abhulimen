@@ -2,11 +2,9 @@ import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:rr_priscilla_abhulimen/app/locator.dart';
-import 'package:rr_priscilla_abhulimen/app/service_state.dart';
 import 'package:rr_priscilla_abhulimen/core/services/navigation_service.dart';
 import 'package:rr_priscilla_abhulimen/styles/colors.dart';
 import 'package:rr_priscilla_abhulimen/widgets/rr_alert.dart';
-import 'error_helper.dart';
 
 class AppNotification {
   AppNotification._();
@@ -66,17 +64,12 @@ class AppNotification {
   }) async {
     String errorMessage;
 
-    if (message is ErrorState) {
-      final error = message.value;
-      errorMessage = error.errorMessage;
-    } else if (message is String) {
+    if (message is String) {
       errorMessage = message;
-    } else {
-      errorMessage = genericErrorMessageString;
     }
 
     Flushbar flush = await _show(
-      message: errorMessage ?? genericErrorMessageString,
+      message: errorMessage ,
       backgroundColor: Colors.red,
       icon: Icons.cancel,
       title: 'Error',
@@ -88,7 +81,7 @@ class AppNotification {
     return RRAlert.show(
       context ?? _appContext,
       title: 'Oops',
-      description: errorMessage ?? genericErrorMessageString,
+      description: errorMessage ,
       gravity: RRAlert.TOP,
       backgroundColor: Colors.red,
       duration: 1,
